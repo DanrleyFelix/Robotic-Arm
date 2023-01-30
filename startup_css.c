@@ -1,35 +1,12 @@
-//*****************************************************************************
-//
-// startup_ccs.c - Startup code for use with TI's Code Composer Studio.
-//
-// Copyright (c) 2013-2017 Texas Instruments Incorporated.  All rights reserved.
-// Software License Agreement
-// 
-// Texas Instruments (TI) is supplying this software for use solely and
-// exclusively on TI's microcontroller products. The software is owned by
-// TI and/or its suppliers, and is protected under applicable copyright
-// laws. You may not combine this software with "viral" open-source
-// software in order to form a larger program.
-// 
-// THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.
-// NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
-// NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY
-// CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
-// DAMAGES, FOR ANY REASON WHATSOEVER.
-// 
 // This is part of revision 2.1.4.178 of the EK-TM4C1294XL Firmware Package.
-//
 //*****************************************************************************
 
 #include <stdint.h>
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
 
-//*****************************************************************************
-//
 // Forward declaration of the default fault handlers.
-//
+
 //*****************************************************************************
 void ResetISR(void);
 static void NmiSR(void);
@@ -37,24 +14,24 @@ static void FaultISR(void);
 static void IntDefaultHandler(void);
 
 //*****************************************************************************
-//
+
 // External declaration for the reset handler that is to be called when the
 // processor is started
-//
+
 //*****************************************************************************
 extern void _c_int00(void);
 
 //*****************************************************************************
-//
+
 // Linker variable that marks the top of the stack.
-//
+
 //*****************************************************************************
 extern uint32_t __STACK_TOP;
 
 //*****************************************************************************
-//
+
 // External declaration for the interrupt handler used by the application.
-//
+
 //*****************************************************************************
 // extern void UARTIntHandler(void);
 extern void intAD0(void);
@@ -64,7 +41,7 @@ extern void intTimer1Handler(void);
 // The vector table.  Note that the proper constructs must be placed on this to
 // ensure that it ends up at physical address 0x0000.0000 or at the start of
 // the program if located at a start address other than 0.
-//
+
 //*****************************************************************************
 #pragma DATA_SECTION(g_pfnVectors, ".intvecs")
 void (* const g_pfnVectors[])(void) =
@@ -201,22 +178,22 @@ void (* const g_pfnVectors[])(void) =
 };
 
 //*****************************************************************************
-//
+
 // This is the code that gets called when the processor first starts execution
 // following a reset event.  Only the absolutely necessary set is performed,
 // after which the application supplied entry() routine is called.  Any fancy
 // actions (such as making decisions based on the reset cause register, and
 // resetting the bits in that register) are left solely in the hands of the
 // application.
-//
+
 //*****************************************************************************
 void
 ResetISR(void)
 {
-    //
+
     // Jump to the CCS C initialization routine.  This will enable the
     // floating-point unit as well, so that does not need to be done here.
-    //
+
     __asm("    .global _c_int00\n"
           "    b.w     _c_int00");
 }
@@ -240,11 +217,9 @@ NmiSR(void)
 }
 
 //*****************************************************************************
-//
 // This is the code that gets called when the processor receives a fault
 // interrupt.  This simply enters an infinite loop, preserving the system state
 // for examination by a debugger.
-//
 //*****************************************************************************
 static void
 FaultISR(void)
